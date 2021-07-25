@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import * as contentful from 'contentful';
+import ArticleCard from "./components/ArticleCard";
+
+const client = contentful.createClient({
+  space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
+  accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN
+})
 
 function App() {
+  const [state, setState] = useState({})
+
+  useEffect(() => {
+    const getContent = () => {
+      client
+        .getEntries({'content_type': 'blogPost'})
+        .then((entries) => setState(entries))
+    }
+    getContent();
+  }, [])
+
+  const { items } = state;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      { items && items.map(item => {
+        const { title, publishDate, description, slug, heroImage } = item.fields;
+        return <ArticleCard key={slug} title={title} publishDate={publishDate} description={description} heroImage={heroImage} />
+      })}
     </div>
   );
 }
