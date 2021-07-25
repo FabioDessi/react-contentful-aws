@@ -4,7 +4,8 @@ import ArticleCard from "./components/ArticleCard";
 
 const client = contentful.createClient({
   space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
-  accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN
+  accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN,
+  environment: process.env.REACT_APP_CONTENTFUL_ENVIRONMENT
 })
 
 function App() {
