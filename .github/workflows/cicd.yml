@@ -17,13 +17,11 @@ jobs:
       - run: yarn install
       - run: yarn run build
 
-      - name: Configure AWS Credentials
+      - name: AWS Setup and s3 deploy
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
-
-      - name: Copy files to the s3 website content bucket
         run:
           aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/
